@@ -10,25 +10,31 @@ namespace themostPopularWords
     {
         static void Main(string[] args)
         {
-            string mainStr = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sodales consectetur purus at faucibus. Donec mi quam, tempor vel ipsum non, faucibus suscipit massa. Morbi lacinia velit blandit tincidunt efficitur. Vestibulum eget metus imperdiet sapien laoreet faucibus. Nunc eget vehicula mauris, ac auctor lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vel odio nec mi tempor dignissim.";
+              string mainStr = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sodales consectetur purus at faucibus. Donec mi quam, tempor vel ipsum non, faucibus suscipit massa. Morbi lacinia velit blandit tincidunt efficitur. Vestibulum eget metus imperdiet sapien laoreet faucibus. Nunc eget vehicula mauris, ac auctor lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vel odio nec mi tempor dignissim.";
+            //string mainStr = "Мама мыла-мыла-мыла раму!";
+
+            foreach (var item in GetTheMostPopularWords(mainStr))
+            {
+                Console.WriteLine(item);
+            }
+            Console.ReadKey();
             IEnumerable<string> result = GetTheMostPopularWords(mainStr);
         }
 
         private static IEnumerable<string> GetTheMostPopularWords(string mainStr)
         {
-            char[] separators = new char[] { ' ', '-', '_', '.', ','};
-            string[] arratOfStr = mainStr.Split(separators);
+            char[] separators = new char[] { ' ', '-', '_', '.', ',', '!'};
+            var arratOfStr = mainStr.Split(separators).Select(x => x.ToLower()).Where(x => x.Length > 0);
+            var collectionOfCollictions = arratOfStr.GroupBy(x => x).OrderByDescending(x => x.Count()).Select(x => x.Key);
 
+            var result = mainStr.Split(separators)
+                .Select(x => x.ToLower())
+                .Where(x => x.Length > 0)
+                .GroupBy(x => x)
+                .OrderByDescending(x => x.Count())
+                .Select(x => x.Key.ToString() + " " + x.Count());
 
-
-            var uniq = from x in arratOfStr
-                       group x by x into g
-                       let count = g.Count()
-                       orderby count descending
-                       select new { Value = g.Key, Count = count };
-
-            var topTen = uniq.OrderBy(x => x.Count).Select(x => x.Value);
-            return new List<string>();
+            return result;
         }
     }
 }
