@@ -29,8 +29,6 @@ namespace themostPopularWords
         private static IEnumerable<string> GetTheMostPopularWords(string mainStr)
         {
             char[] separators = new char[] { ' ', '-', '_', '.', ',', '!'};
-            var arratOfStr = mainStr.Split(separators).Select(x => x.ToLower()).Where(x => x.Length > 0);
-            var collectionOfCollictions = arratOfStr.GroupBy(x => x).OrderByDescending(x => x.Count()).Select(x => x.Key);
 
             var result = mainStr.Split(separators)
                 .Select(x => x.ToLower())
