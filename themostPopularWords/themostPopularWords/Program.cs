@@ -19,6 +19,11 @@ namespace themostPopularWords
             }
             Console.ReadKey();
             IEnumerable<string> result = GetTheMostPopularWords(mainStr);
+            foreach (var item in result)
+            {
+                Console.WriteLine(item);
+            }
+            Console.ReadLine();
         }
 
         private static IEnumerable<string> GetTheMostPopularWords(string mainStr)
@@ -31,8 +36,10 @@ namespace themostPopularWords
                 .Select(x => x.ToLower())
                 .Where(x => x.Length > 0)
                 .GroupBy(x => x)
+                .OrderBy(x => x.Key)
                 .OrderByDescending(x => x.Count())
-                .Select(x => x.Key.ToString() + " " + x.Count());
+                .Select(x => x.Key.ToString() + " " + x.Count())
+                .Take(10);
 
             return result;
         }
@@ -48,3 +55,15 @@ namespace themostPopularWords
 //Если в тексте некоторые слова имеют одинаковую частоту, т.е.их нельзя однозначно упорядочить только по частоте, 
 //то дополнительно упорядочите слова с одинаковой частотой в лексикографическом порядке. 
 //Задача имеет красивое решение через LINQ без циклов и условных операторов.Попробуйте придумать его.
+
+//Sample Output 2:
+//consectetur
+//faucibus
+//ipsum
+//lorem
+//adipiscing
+//amet
+//dolor
+//eget
+//elit
+//mi
